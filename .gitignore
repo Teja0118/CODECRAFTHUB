@@ -1,0 +1,20 @@
+# ============================================================================
+# File Name    : .gitignore
+# Description  : Specifies files and directories that Git should ignore.
+#                These files are typically environment-specific, generated
+#                automatically, or contain sensitive information that should
+#                not be committed to the repository.
+#
+# Responsibilities:
+#  - Exclude installed Node.js dependencies
+#  - Prevent sensitive environment configuration files from being committed
+#
+# Author       : Your Name
+# Version      : 1.0.0
+# ============================================================================
+
+# Ignore installed Node.js packages
+node_modules
+
+# Ignore environment configuration containing sensitive information
+.env

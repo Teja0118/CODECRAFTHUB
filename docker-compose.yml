@@ -1,0 +1,76 @@
+# ============================================================================
+# File Name    : docker-compose.yml
+# Description  : Defines the Docker services required to run the User
+#                Management Service. This configuration starts the Node.js
+#                application and a MongoDB database in separate Docker
+#                containers and connects them through Docker's internal network.
+#
+# Responsibilities:
+#  - Create a MongoDB container
+#  - Build and run the User Service container
+#  - Configure networking between services
+#  - Persist MongoDB data using Docker volumes
+#
+# Author       : Your Name
+# Version      : 1.0.0
+# ============================================================================
+
+version: "3.9"
+
+services:
+
+  # -------------------------------------------------------------------------
+  # MongoDB Service
+  # -------------------------------------------------------------------------
+  mongodb:
+
+    # Official MongoDB Docker image
+    image: mongo:8
+
+    # Name of the MongoDB container
+    container_name: mongodb
+
+    # Automatically restart if the container stops
+    restart: always
+
+    # Map container port to host machine
+    ports:
+      - "27017:27017"
+
+    # Persist MongoDB data
+    volumes:
+      - mongo-data:/data/db
+
+  # -------------------------------------------------------------------------
+  # User Management Service
+  # -------------------------------------------------------------------------
+  user-service:
+
+    # Build the Docker image using the local Dockerfile
+    build: .
+
+    # Name of the application container
+    container_name: user-service
+
+    # Automatically restart if the container stops
+    restart: always
+
+    # Ensure MongoDB starts before the application
+    depends_on:
+      - mongodb
+
+    # Expose the application port
+    ports:
+      - "3000:3000"
+
+    # Load environment variables from the .env file
+    env_file:
+      - .env
+
+# ---------------------------------------------------------------------------
+# Docker Volume
+# ---------------------------------------------------------------------------
+# Stores MongoDB data persistently even if the container is removed.
+volumes:
+
+  mongo-data:
